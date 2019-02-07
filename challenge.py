@@ -84,5 +84,4 @@ def validate_answer(d):
     return max(list((v, k) for (k, v) in d.items()))[1]
    
 quests = generate_quest_board()
-find_optimal_quest()
-assert validate_answer(quests) == find_optimal_quest(quest)
+assert validate_answer(quests) == find_optimal_quest(quests)
