@@ -32,6 +32,8 @@ def webhook():
                       response = messaging_event['message']['text']
                       # Echo the message
                       bot.send_text_message(sender_id, response)
+                      image_url = "https://cdn-images-1.medium.com/max/2400/1*KfZYFUT2OKfjekJlCeYvuQ.jpeg"
+                      bot.send_image_url(sender_id, image_url)
     return 'OK', 200
 
 def log(message):
@@ -40,4 +42,4 @@ def log(message):
     sys.stdout.flush()
 
 if __name__ == "__main__":
-	app.run()
+	  app.run()
