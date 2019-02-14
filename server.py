@@ -26,6 +26,9 @@ def webhook():
             for messaging_event in entry['messaging']:
                 sender_id = messaging_event['sender']['id']
                 # Echo Bot
+                if messaging_event.get('postback'):
+                    if messaging_event['postback'].get('payload'):
+                      bot.send_text_message(sender_id, messaging_event['postback']['payload'])
                 if messaging_event.get('message'):
                     if messaging_event['message'].get('text'):
                       # Retrieve the message
@@ -37,11 +40,11 @@ def webhook():
                       # bot.send_image_url(sender_id, image_url)
                       # Send a button
                       postback_button=[
-                                        {
-                                          "type": "web_url",
-                                          "url": "https://paulpan05.github.io/",
-                                          "title": "My Personal Page"
-                                        }
+                                          {
+                                            "type": "postback",
+                                            "title": "Test",
+                                            "payload": "test"
+                                          }
                                       ]
                       bot.send_button_message(sender_id, "Test Button", postback_button)
     return 'OK', 200
