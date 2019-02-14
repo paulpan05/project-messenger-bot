@@ -35,6 +35,15 @@ def webhook():
                       # Send an image
                       image_url = "https://cdn-images-1.medium.com/max/2400/1*KfZYFUT2OKfjekJlCeYvuQ.jpeg"
                       bot.send_image_url(sender_id, image_url)
+                      # Send a button
+                      postback_button=[
+                                        {
+                                          'type': 'postback',
+                                          'title': 'Call Me',
+                                          'payload': '(626) 691-8088'
+                                        }
+                                      ]
+                      bot.send_button_message(sender_id, "Test Button", postback_button)
     return 'OK', 200
 
 def log(message):
