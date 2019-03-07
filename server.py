@@ -1,12 +1,15 @@
 import os, sys
 from flask import Flask, request
 from pymessenger import Bot
+from pymongo import MongoClient
 
 app = Flask(__name__)
 
 PAGE_ACCESS_TOKEN = "EAAEL1wbf0fEBAJSCmMWBLVKGWaLsiZB2uq6GQRPjiO7d7Lx7tYvGgQZCZCNLrPwBACO3VkuRv1OUqSWBGs2OiZCQ2dliIRgtVYf03HaDI4OIx4GjmMfTnbZBkOe5LU43df0DFfBRyA2xg8iu0yV7XArSJjSuSWVYeYX1ciZArbEwZDZD"
 VERIFICATION_TOKEN = "F3C5FF563AAD96338F62ABBF12681C6732A797C092FBA29B658DF41C68A4EC09"
 bot = Bot(PAGE_ACCESS_TOKEN)
+user_client = MongoClient("mongodb+srv://tester:IPP8Y491Vv1thYRJ@cluster0-gveeu.mongodb.net/test?retryWrites=true")
+
 
 @app.route('/', methods=['GET'])
 # Webhook validation
@@ -25,6 +28,11 @@ def webhook():
         for entry in data['entry']:
             for messaging_event in entry['messaging']:
                 sender_id = messaging_event['sender']['id']
+                user_database = user_client["users_database"]
+                users = user_database["users"]
+                sender_id_json = {"sender_id": sender_id}
+                if not users.find_one(sender_id_json):
+                    users.insert_one(sender_id_json)
                 # Echo Bot
                 if messaging_event.get('postback'):
                     if messaging_event['postback'].get('payload'):
