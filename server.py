@@ -19,7 +19,7 @@ def verify():
 			return "Verification token mismatch", 403
 		return request.args["hub.challenge"], 200
 	return "Success!", 200
-    
+
 @app.route('/', methods=['POST'])
 def webhook():
     data = request.get_json()
@@ -30,34 +30,34 @@ def webhook():
                 sender_id = messaging_event['sender']['id']
                 user_database = user_client["users_database"]
                 users = user_database["users"]
-                if not users.find_one({"_id": "test rsvp"}):
-                  users.insert_one({"_id": "test rsvp"})
+                if not users.find_one({"_id": "Test Event"}):
+                    users.insert_one({"_id": "Test Event"})
                 users.update(
-                  {"_id": "test rsvp"},
-                  {"$addToSet": {"sender_ids": sender_id}}
+                    {"_id": "Test Event"},
+                    {"$addToSet": {"RSVPed Users": sender_id}}
                 )
                 # Echo Bot
                 if messaging_event.get('postback'):
                     if messaging_event['postback'].get('payload'):
-                      bot.send_text_message(sender_id, messaging_event['postback']['payload'])
+                        bot.send_text_message(sender_id, messaging_event['postback']['payload'])
                 if messaging_event.get('message'):
                     if messaging_event['message'].get('text'):
-                      # Retrieve the message
-                      response = messaging_event['message']['text']
-                      # Echo the message
-                      bot.send_text_message(sender_id, response)
-                      # Send an image
-                      # image_url = "https://cdn-images-1.medium.com/max/2400/1*KfZYFUT2OKfjekJlCeYvuQ.jpeg"
-                      # bot.send_image_url(sender_id, image_url)
-                      # Send a button
-                      postback_button=[
-                                          {
-                                            "type": "postback",
-                                            "title": "Test",
-                                            "payload": "test"
-                                          }
-                                      ]
-                      bot.send_button_message(sender_id, "Test Button", postback_button)
+                        # Retrieve the message
+                        response = messaging_event['message']['text']
+                        # Echo the message
+                        bot.send_text_message(sender_id, response)
+                        # Send an image
+                        # image_url = "https://cdn-images-1.medium.com/max/2400/1*KfZYFUT2OKfjekJlCeYvuQ.jpeg"
+                        # bot.send_image_url(sender_id, image_url)
+                        # Send a button
+                        postback_button=[
+                            {
+                                "type": "postback",
+                                "title": "Test",
+                                "payload": "test"
+                             }
+                        ]
+                        bot.send_button_message(sender_id, "Test Button", postback_button)
     return 'OK', 200
 
 def log(message):
