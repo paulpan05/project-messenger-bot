@@ -30,9 +30,12 @@ def webhook():
                 sender_id = messaging_event['sender']['id']
                 user_database = user_client["users_database"]
                 users = user_database["users"]
-                sender_id_json = {"sender_id": sender_id}
-                if not users.find_one(sender_id_json):
-                    users.insert_one(sender_id_json)
+                if not users.find_one({"_id": "test rsvp"}):
+                  users.insert_one({"_id": "test rsvp"})
+                users.update(
+                  {"_id": "test rsvp"},
+                  {"$addToSet": {"sender_ids": sender_id}}
+                )
                 # Echo Bot
                 if messaging_event.get('postback'):
                     if messaging_event['postback'].get('payload'):
